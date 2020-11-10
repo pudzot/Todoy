@@ -9,7 +9,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let itemArray = ["learn ios", "kup chleb", "zrob wszystko"]
+    let itemArray = ["learn ios", "kup chleb i mleko", "zrob wszystko"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
