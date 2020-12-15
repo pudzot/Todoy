@@ -12,9 +12,8 @@ class CategoryViewController: UITableViewController {
     
     let realm = try! Realm()
     
-    var categories = [Category]()
+    var categories : Results<Category>?
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +24,7 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        categories.count
+        categories?.count ?? 1
     }
     
     
@@ -33,7 +32,7 @@ class CategoryViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories yet"
 
         
         return cell
@@ -50,7 +49,7 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! TodoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = categories[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row]
         }
     }
     
@@ -65,7 +64,7 @@ class CategoryViewController: UITableViewController {
             let newCategory = Category()
             newCategory.name = textfield.text!
             
-            self.categories.append(newCategory)
+           
             
             self.save(category: newCategory)
             
@@ -98,6 +97,9 @@ class CategoryViewController: UITableViewController {
     
     func loadCategory() {
         
+        
+        categories = realm.objects(Category.self)
+        
 //        let request : NSFetchRequest<Category> = Category.fetchRequest()
 //        
 //        do {
@@ -106,7 +108,7 @@ class CategoryViewController: UITableViewController {
 //            print("error load category \(error)")
 //        }
 //        
-//        tableView.reloadData()
+          tableView.reloadData()
     }
     
 
